@@ -1,0 +1,10 @@
+{
+  "name": "input-relay",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Evin Owen <github@evinowen.net>",
+  "license": "MIT",
+  "dependencies": {
+    "keypress": "^0.2.1"
+  }
+}
