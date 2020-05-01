@@ -1,9 +1,13 @@
 const http = require('http')
 const keypress = require('keypress')
+const { program } = require('commander');
 
-const hostname = ''
-const port = 3000
-const player = 1
+program
+  .requiredOption('-h, --host <host>', 'set the target hostname')
+  .option('-p, --port <port>', 'set the port number, defaults to 3000', 3000)
+  .option('-P, --player <number>', 'set the player number, defaults to 1', 1)
+
+program.parse(process.argv);
 
 const map = {
   "up": "up",
@@ -20,20 +24,20 @@ const held = { }
 
 keypress(process.stdin)
 
-function send_request(hostname, port, player, key) {
+function send_request(key) {
   if (key in held) {
     process.stdout.write('-')
     return
   }
 
-  console.log('send_request', hostname, port, player, key)
+  console.log('send_request', key)
   held[key] = 1
 
   return new Promise((resolve, reject) => {
     const options = {
-      hostname: hostname,
-      port: port,
-      path: `/player${player}/${key}`,
+      hostname: program.host,
+      port: program.port,
+      path: `/player${program.player}/${key}`,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -59,7 +63,7 @@ process.stdin.on('keypress', function (ch, key) {
   }
 
   if (key.name in map) {
-    send_request(hostname, port, player, map[key.name])
+    send_request(map[key.name])
   } else {
     console.log('unmapped key', key.name)
   }
