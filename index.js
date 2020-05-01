@@ -1,6 +1,21 @@
 const http = require('http')
 const keypress = require('keypress');
 
+const hostname = ''
+const port = 3000
+const player = 1
+
+const map = {
+  "up": "up",
+  "down": "down",
+  "left": "left",
+  "right": "right",
+  "f": "a",
+  "d": "b",
+  "s": "select",
+  "return": "start"
+}
+
 const held = { }
 
 keypress(process.stdin);
@@ -43,21 +58,12 @@ process.stdin.on('keypress', function (ch, key) {
     process.stdin.pause();
   }
 
-  if (key && key.name == 'up') {
-    console.log('up')
+  if (key.name in map) {
+    send_request(hostname, port, player, map[key.name])
+  } else {
+    console.log('unmapped key', key.name)
   }
 
-  if (key && key.name == 'down') {
-    console.log('down')
-  }
-
-  if (key && key.name == 'right') {
-    console.log('right')
-  }
-
-  if (key && key.name == 'left') {
-    console.log('left')
-  }
 });
 
 process.stdin.setRawMode(true);
