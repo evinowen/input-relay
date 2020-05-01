@@ -5,6 +5,7 @@
   "author": "Evin Owen <github@evinowen.net>",
   "license": "MIT",
   "dependencies": {
+    "commander": "^5.1.0",
     "keypress": "^0.2.1"
   }
 }
