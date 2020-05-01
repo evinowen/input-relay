@@ -1,10 +1,18 @@
 const http = require('http')
 const keypress = require('keypress');
 
+const held = { }
+
 keypress(process.stdin);
 
 function send_request(hostname, port, player, key) {
+  if (key in held) {
+    process.stdout.write('-')
+    return
+  }
+
   console.log('send_request', hostname, port, player, key)
+  held[key] = 1
 
   return new Promise((resolve, reject) => {
     const options = {
@@ -26,7 +34,7 @@ function send_request(hostname, port, player, key) {
     req.on('error', reject)
 
     req.end()
-  })
+  }).then(() => delete held[key])
 }
 
 process.stdin.on('keypress', function (ch, key) {
